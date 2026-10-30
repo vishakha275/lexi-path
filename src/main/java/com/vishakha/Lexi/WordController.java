@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
+import java.util.Optional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -30,5 +32,8 @@ public class WordController {
     public List<Word> getAllWords() {
         return wordRepository.findAll();
     }
-    
+    @GetMapping("/{word}")
+    public Optional<Word> getWord(@PathVariable String word){
+        return wordRepository.findByWord(word);
+    }
 }
