@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+
 
 @Entity 
 @Table(name="words")
@@ -13,14 +15,15 @@ public class Word {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     private String meaning;
-     private String word;
+    @Column(unique=true)
+    private String word;
 
     public int getId() {
         return id;
     }
     public void setId(int id) {
         this.id = id;
-    }
+    } 
     public String getWord() {
         return word;
     }
