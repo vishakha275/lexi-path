@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import jakarta.persistence.Column;
 
 
@@ -17,7 +18,21 @@ public class Word {
     private String meaning;
     @Column(unique=true)
     private String word;
+    private LocalDate dueDate=LocalDate.now();
+    private int gap=0;
 
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+    public int getGap() {
+        return gap;
+    }
+    public void setGap(int gap) {
+        this.gap = gap;
+    }
     public int getId() {
         return id;
     }
