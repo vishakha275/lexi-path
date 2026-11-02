@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
+import java.time.LocalDate;
 
 
 @RestController 
@@ -41,5 +42,9 @@ public class WordController {
         return wordRepository.findByWord(word)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
+    }
+    @GetMapping("/due-today")
+    public List<Word> dueWords(){
+        return wordRepository.findByDueDateLessThanEqual(LocalDate.now());
     }
 }
