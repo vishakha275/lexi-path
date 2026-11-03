@@ -9,4 +9,5 @@ public interface WordRepository extends JpaRepository<Word, Integer> {
     public boolean existsByWord(String word);
     List<Word> findByDueDateLessThanEqual(LocalDate dueDate);
     public Optional<Word> findById(int id);
+    public Optional<Word> findFirstByDueDateLessThanEqualOrderByDueDateAscIdAsc(LocalDate dueDate);
 }

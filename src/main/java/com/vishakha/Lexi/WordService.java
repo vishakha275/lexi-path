@@ -41,4 +41,8 @@ public class WordService {
         word.applyReview(remembered);
         return Optional.of(wordRepository.save(word));
     }
+
+    public Optional<Word> getNextWord(){
+        return wordRepository.findFirstByDueDateLessThanEqualOrderByDueDateAscIdAsc(LocalDate.now());
+    }
 }

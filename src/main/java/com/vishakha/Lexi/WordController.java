@@ -50,4 +50,10 @@ public class WordController {
     public List<Word> getDueWords(){
         return wordService.getDueWords();
     }
+    @GetMapping("/next")
+    public ResponseEntity<Word> getNextWord() {
+        return wordService.getNextWord()
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
+    }
 }
