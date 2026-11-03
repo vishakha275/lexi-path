@@ -10,16 +10,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
-import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController 
 @RequestMapping ("/words")
 
 public class WordController {
+    private final WordService wordService;
     private final WordRepository wordRepository;
-
-    WordController(WordRepository wordRepository){
+    WordController(WordService wordService, WordRepository wordRepository){
+        this.wordService=wordService;
         this.wordRepository=wordRepository;
     }
 
@@ -45,16 +45,16 @@ public class WordController {
     }
     @GetMapping
     public List<Word> getAllWords() {
-        return wordRepository.findAll();
+        return wordService.getAllWords();
     }
     @GetMapping("/{word}")
     public ResponseEntity<Word> getWord(@PathVariable String word){
-        return wordRepository.findByWord(word)
+        return wordService.getWord(word)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
     }
     @GetMapping("/due-today")
-    public List<Word> dueWords(){
-        return wordRepository.findByDueDateLessThanEqual(LocalDate.now());
+    public List<Word> getDueWords(){
+        return wordService.getDueWords();
     }
 }
