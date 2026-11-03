@@ -51,4 +51,20 @@ public class Word {
     public void setMeaning(String meaning) {
         this.meaning = meaning;
     }
+
+    public void applyReview(boolean remembered) {
+        if(remembered) {
+            if(gap!=0) {
+                gap*=2;
+            }
+            else{
+                gap=1;
+            }
+        }
+        else {
+            gap=1;
+        }
+        
+        dueDate=LocalDate.now().plusDays(gap);
+    }
 }

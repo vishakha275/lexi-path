@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.time.LocalDate;
-
+import java.util.Optional;
 
 @RestController 
 @RequestMapping ("/words")
@@ -32,6 +32,16 @@ public class WordController {
         newWord.setWord(word);
         newWord.setMeaning(meaning);
         return ResponseEntity.status(HttpStatus.CREATED).body(wordRepository.save(newWord));
+    }
+    @PostMapping("/{id}/review")
+    public ResponseEntity<Word> reviewWord(@PathVariable int id, @RequestParam boolean remembered){
+        Optional<Word> foundWord=wordRepository.findById(id);
+        if(foundWord.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        Word word=foundWord.get();
+        word.applyReview(remembered);
+        return ResponseEntity.status(HttpStatus.CREATED).body(wordRepository.save(word));
     }
     @GetMapping
     public List<Word> getAllWords() {
