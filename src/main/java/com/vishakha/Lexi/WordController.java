@@ -17,31 +17,24 @@ import java.util.Optional;
 
 public class WordController {
     private final WordService wordService;
-    private final WordRepository wordRepository;
-    WordController(WordService wordService, WordRepository wordRepository){
+
+    WordController(WordService wordService){
         this.wordService=wordService;
-        this.wordRepository=wordRepository;
     }
 
     @PostMapping
     public ResponseEntity<Word> createWord(@RequestParam String word, @RequestParam String meaning) {
-        if(wordRepository.existsByWord(word)){
+        Optional<Word> createdWord=wordService.createWord(word, meaning);
+        if(createdWord.isEmpty()){
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        Word newWord=new Word();
-        newWord.setWord(word);
-        newWord.setMeaning(meaning);
-        return ResponseEntity.status(HttpStatus.CREATED).body(wordRepository.save(newWord));
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdWord.get());
     }
     @PostMapping("/{id}/review")
     public ResponseEntity<Word> reviewWord(@PathVariable int id, @RequestParam boolean remembered){
-        Optional<Word> foundWord=wordRepository.findById(id);
-        if(foundWord.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        Word word=foundWord.get();
-        word.applyReview(remembered);
-        return ResponseEntity.status(HttpStatus.CREATED).body(wordRepository.save(word));
+        return wordService.reviewWord(id, remembered)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
     }
     @GetMapping
     public List<Word> getAllWords() {
